@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.myschool.dao.StudentMapper" >
+  <insert id="insert" parameterType="com.myschool.bean.Student" >
+    insert into student 
+    values (#{id},#{name},#{gid},#{sex},#{birthday})
+  </insert>
+  <delete id="delete">
+    delete from student
+    where id = #{id}
+  </delete>
+  <update id="update" parameterType="com.myschool.bean.Student" >
+    update student
+    set name=#{name},gid=#{gid},sex=#{sex},birthday=#{birthday}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultType="com.myschool.bean.Student">
+    select * from student
+    where id = #{id}
+  </select>
+  
+  <resultMap type="com.myschool.bean.Student" id="s">
+  	<id column="id" property="id"/>
+  	<result column="name" property="name"/>
+  	<result column="gid" property="gid"/>
+  	<result column="sex" property="sex"/>
+  	<result column="birthday" property="birthday"/>
+  	<association property="grade" javaType="grade">
+  		<id column="g_id" property="id"/>
+  		<id column="g_name" property="name"/>
+  	</association>
+  </resultMap>
+  
+  <select id="findAll" resultMap="s">
+  	SELECT s.*,g.id AS g_id,g.name AS g_name 
+	FROM student s,grade g
+	WHERE s.gid=g.id
+  </select>
+  <select id="selectCount" resultType="int">
+  	SELECT count(1) from student
+  </select>
+  <select id="count" resultType="int">
+  	SELECT COUNT(1) FROM student
+	WHERE NAME=#{name}
+  </select>
+  
+  <select id="selectlimit" resultType="com.myschool.bean.Student">
+  	SELECT * FROM student LIMIT #{form},#{pageSize}
+  </select>
+  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
